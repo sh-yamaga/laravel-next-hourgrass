@@ -1,0 +1,44 @@
+name: laravel-next-hourgrass
+
+services:
+  front-web:
+    container_name: front-web
+    build:
+      context: ./front-web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../front-web:/app/front-web
+    command: npm run dev
+  
+  api-service:
+    container_name: api-service
+    build:
+      context: ./api-service
+      dockerfile: Dockerfile
+    volumes:
+      - ../api-service:/app/api-service
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  
+  db:
+    container_name: db
+    platform: linux/x86_64 # apple slicon only
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    healthcheck:
+      test: "pg_isready -U postgres || exit 1"
+      interval: 2s
+      timeout: 3s
+      retries: 3
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/postgresql.conf:/etc/postgresql/postgresql.conf
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
