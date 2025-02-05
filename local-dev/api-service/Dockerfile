@@ -21,4 +21,4 @@ RUN apt-get update && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD /bin/sh -c "npm install && npm run build && composer install && php artisan serve --host=0.0.0.0"
