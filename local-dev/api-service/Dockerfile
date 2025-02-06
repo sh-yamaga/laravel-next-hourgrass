@@ -2,6 +2,8 @@ FROM node:22-bullseye as node
 FROM composer:2.8.5 as composer
 FROM php:8.4-bullseye
 
+ENV TZ Asia/Tokyo
+
 WORKDIR /app/api-service
 
 # composerのコピー
@@ -24,5 +26,3 @@ RUN apt-get update && \
 RUN docker-php-ext-install pdo_pgsql pcntl
 
 EXPOSE 5173
-
-CMD /bin/sh -c "composer run dev"
