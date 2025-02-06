@@ -21,6 +21,7 @@ services:
       - ../api-service:/app/api-service
     ports:
       - "8000:8000"
+      - "5173:5173" # port for vite
     depends_on:
       db:
         condition: service_healthy

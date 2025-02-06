@@ -17,8 +17,12 @@ RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs \
 # packageのインストール
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git libicu-dev libonig-dev libzip-dev unzip locales \
+    git libicu-dev libonig-dev libzip-dev unzip locales libpq-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-CMD /bin/sh -c "npm install && npm run build && composer install && php artisan serve --host=0.0.0.0"
+RUN docker-php-ext-install pdo_pgsql pcntl
+
+EXPOSE 5173
+
+CMD /bin/sh -c "npm install && composer install && composer run dev"
