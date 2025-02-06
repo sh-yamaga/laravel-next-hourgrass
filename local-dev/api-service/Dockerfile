@@ -25,4 +25,4 @@ RUN docker-php-ext-install pdo_pgsql pcntl
 
 EXPOSE 5173
 
-CMD /bin/sh -c "npm install && composer install && composer run dev"
+CMD /bin/sh -c "composer run dev"

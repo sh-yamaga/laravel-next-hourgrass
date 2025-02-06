@@ -12,3 +12,12 @@ up:
 .PHONY: down
 down:
 	@$(DOCKER_COMPOSE) down
+
+.PHONY: init api-init front-init
+init: api-init front-init
+
+api-init:
+	@$(DOCKER_COMPOSE) run --rm api-service /bin/sh -c "npm install && composer install && cp .env.local .env && php artisan key:generate && php artisan migrate:fresh --seed"
+
+front-init:
+	@$(DOCKER_COMPOSE) run --rm front-web /bin/sh -c "npm install"
